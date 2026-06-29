@@ -9,12 +9,34 @@
 
 body {
     min-height: 100vh;
-    background: linear-gradient(-45deg, #ffe6e6, #e6e6ff, #ffebf5);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    height: 100vh;
+    background: linear-gradient(-45deg, #ffb3d9, #ffc9e3, #ffd6ed, #ffe0f0, #ffebf5, #fff0f8);
+    background-size: 600% 600%;
+    animation: gradientBG 8s ease infinite;
     font-family: 'Quicksand', sans-serif;
-    overflow-x: hidden;
+    overflow: hidden;
     padding: 2rem;
+    position: relative;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 192, 203, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 182, 193, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 228, 225, 0.4) 0%, transparent 50%);
+    animation: moveBackground 15s ease infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes moveBackground {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(5%, 5%) scale(1.1); }
+    66% { transform: translate(-5%, 3%) scale(1.05); }
 }
 
 .custom-cursor {
@@ -115,6 +137,7 @@ h1 {
     position: fixed;
     pointer-events: none;
     animation: float 3s ease-in-out infinite;
+    z-index: 0;
 }
 
 .ending-section {
@@ -168,9 +191,10 @@ h1 {
     color: white;
     margin: 2rem 0;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
     font-family: 'Comic Neue', cursive;
     box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+    position: relative;
 }
 
 .shuffle-button.story-mode {
@@ -180,10 +204,46 @@ h1 {
 
 .shuffle-button:hover {
     transform: scale(1.1);
+    box-shadow: 0 0 40px rgba(255, 105, 180, 0.9),
+                0 0 60px rgba(255, 105, 180, 0.7),
+                0 0 80px rgba(255, 105, 180, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    animation: neonPulse 1.5s ease-in-out infinite;
 }
 
 .shuffle-button.story-mode:hover {
     transform: scale(1.2);
+    box-shadow: 0 0 40px rgba(155, 109, 255, 0.9),
+                0 0 60px rgba(155, 109, 255, 0.7),
+                0 0 80px rgba(155, 109, 255, 0.5);
+    animation: neonPulseStory 1.5s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow: 0 0 40px rgba(255, 105, 180, 0.9),
+                    0 0 60px rgba(255, 105, 180, 0.7),
+                    0 0 80px rgba(255, 105, 180, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(255, 105, 180, 1),
+                    0 0 70px rgba(255, 105, 180, 0.8),
+                    0 0 100px rgba(255, 105, 180, 0.6);
+    }
+}
+
+@keyframes neonPulseStory {
+    0%, 100% {
+        box-shadow: 0 0 40px rgba(155, 109, 255, 0.9),
+                    0 0 60px rgba(155, 109, 255, 0.7),
+                    0 0 80px rgba(155, 109, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(155, 109, 255, 1),
+                    0 0 70px rgba(155, 109, 255, 0.8),
+                    0 0 100px rgba(155, 109, 255, 0.6);
+    }
 }
 
 .reason-counter {

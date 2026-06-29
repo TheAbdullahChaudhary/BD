@@ -6,12 +6,23 @@
     <title>Happy Birthday</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Dancing+Script:wght@700&family=Caveat:wght@700&display=swap" rel="stylesheet">
     
 </head>
 <body>
+    <audio id="bgMusic" loop autoplay>
+        <source src="aud.mp3" type="audio/mpeg">
+    </audio>
+    <div class="background-overlay"></div>
     <div class="cursor"></div>
     <div class="container">
-        <h1>Happy Birthday Priya💗</h1>
+        <h1>Happy Birthday Hamna💗</h1>
+        <div class="days-counter">
+            <span class="days-number" id="daysCount">0</span>
+            <span class="days-text">Days of Brightening the World ✨</span>
+        </div>
         <div class="greeting"></div>
         <button class="cta-button">Click to Enter Our World 💕</button>
     </div>

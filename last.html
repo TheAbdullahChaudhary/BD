@@ -16,17 +16,33 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg,
-                    #ffd1dc 0%,
-                    #e6e6fa 25%,
-                    #ffefd5 50%,
-                    #e6e6fa 75%,
-                    #ffd1dc 100%);
-            background-size: 400% 400%;
-            animation: gradientFlow 15s ease infinite;
+            background: linear-gradient(-45deg, #ffb3d9, #ffc9e3, #ffd6ed, #ffe0f0, #ffebf5, #fff0f8);
+            background-size: 600% 600%;
+            animation: gradientFlow 8s ease infinite;
             font-family: 'Quicksand', sans-serif;
             overflow-x: hidden;
             color: #4a4a4a;
+            position: relative;
+        }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 192, 203, 0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 182, 193, 0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(255, 228, 225, 0.4) 0%, transparent 50%);
+            animation: moveBackground 15s ease infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes moveBackground {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(5%, 5%) scale(1.1); }
+            66% { transform: translate(-5%, 3%) scale(1.05); }
         }
 
         @keyframes gradientFlow {
@@ -87,12 +103,12 @@
             height: 100%;
             background-image: radial-gradient(circle, white 1px, transparent 1px);
             background-size: 50px 50px;
-            animation: sparkleLayer 8s linear infinite;
+            animation: sparkleLayer 10s linear infinite;
             opacity: 0.5;
         }
 
         .magic-sparkles::after {
-            animation-delay: -4s;
+            animation-delay: -5s;
             transform: rotate(45deg);
         }
 
@@ -121,6 +137,7 @@
             color: rgba(255, 105, 180, 0.6);
             animation: floatHeart var(--float-duration, 6s) ease-in-out infinite;
             animation-delay: var(--delay, 0s);
+            bottom: 0;
         }
 
         @keyframes floatHeart {
@@ -360,14 +377,58 @@
 </head>
 
 <body>
+    <audio id="bgMusic" loop autoplay>
+        <source src="aud.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        const bgMusic = document.getElementById('bgMusic');
+        const savedTime = localStorage.getItem('musicTime');
+        if (savedTime) {
+            bgMusic.currentTime = parseFloat(savedTime);
+        }
+        bgMusic.volume = 1.0;
+        const playPromise = bgMusic.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(() => {});
+        }
+        setInterval(() => {
+            localStorage.setItem('musicTime', bgMusic.currentTime);
+        }, 1000);
+    </script>
+    <div class="background-overlay"></div>
     <div class="magic-sparkles"></div>
     <div class="floating-hearts">
         <!-- Hearts will be generated via CSS -->
-        <div class="heart" style="--float-duration: 6s; --delay: 0s; --translate-x: 20px;">💝</div>
-        <div class="heart" style="--float-duration: 8s; --delay: 1s; --translate-x: -30px;">💖</div>
-        <div class="heart" style="--float-duration: 7s; --delay: 2s; --translate-x: 40px;">💗</div>
-        <div class="heart" style="--float-duration: 9s; --delay: 3s; --translate-x: -20px;">💓</div>
-        <div class="heart" style="--float-duration: 5s; --delay: 4s; --translate-x: 30px;">💕</div>
+        <div class="heart" style="--float-duration: 10s; --delay: 0s; --translate-x: 20px; left: 5%;">💝</div>
+        <div class="heart" style="--float-duration: 11s; --delay: 0.5s; --translate-x: -30px; left: 15%;">💖</div>
+        <div class="heart" style="--float-duration: 10.5s; --delay: 1s; --translate-x: 40px; left: 25%;">💗</div>
+        <div class="heart" style="--float-duration: 12s; --delay: 1.5s; --translate-x: -20px; left: 35%;">💓</div>
+        <div class="heart" style="--float-duration: 10s; --delay: 2s; --translate-x: 30px; left: 45%;">💕</div>
+        <div class="heart" style="--float-duration: 11.5s; --delay: 2.5s; --translate-x: -40px; left: 55%;">✨</div>
+        <div class="heart" style="--float-duration: 10.8s; --delay: 3s; --translate-x: 25px; left: 65%;">🌸</div>
+        <div class="heart" style="--float-duration: 11.2s; --delay: 3.5s; --translate-x: -35px; left: 75%;">🦋</div>
+        <div class="heart" style="--float-duration: 10.3s; --delay: 4s; --translate-x: 45px; left: 85%;">⭐</div>
+        <div class="heart" style="--float-duration: 11.8s; --delay: 4.5s; --translate-x: -25px; left: 95%;">💫</div>
+        <div class="heart" style="--float-duration: 10.6s; --delay: 5s; --translate-x: 35px; left: 10%;">🌟</div>
+        <div class="heart" style="--float-duration: 11.3s; --delay: 5.5s; --translate-x: -15px; left: 20%;">💝</div>
+        <div class="heart" style="--float-duration: 10.2s; --delay: 6s; --translate-x: 50px; left: 30%;">💖</div>
+        <div class="heart" style="--float-duration: 11.6s; --delay: 6.5s; --translate-x: -45px; left: 40%;">💗</div>
+        <div class="heart" style="--float-duration: 10.9s; --delay: 7s; --translate-x: 15px; left: 50%;">💓</div>
+        <div class="heart" style="--float-duration: 11.1s; --delay: 7.5s; --translate-x: -10px; left: 60%;">💕</div>
+        <div class="heart" style="--float-duration: 10.4s; --delay: 8s; --translate-x: 55px; left: 70%;">✨</div>
+        <div class="heart" style="--float-duration: 11.4s; --delay: 8.5s; --translate-x: -50px; left: 80%;">🌸</div>
+        <div class="heart" style="--float-duration: 10.7s; --delay: 9s; --translate-x: 10px; left: 90%;">🦋</div>
+        <div class="heart" style="--float-duration: 11.9s; --delay: 9.5s; --translate-x: -55px; left: 8%;">⭐</div>
+        <div class="heart" style="--float-duration: 10.1s; --delay: 0.2s; --translate-x: 22px; left: 18%;">💫</div>
+        <div class="heart" style="--float-duration: 11.7s; --delay: 0.8s; --translate-x: -28px; left: 28%;">🌟</div>
+        <div class="heart" style="--float-duration: 10.5s; --delay: 1.3s; --translate-x: 38px; left: 38%;">💝</div>
+        <div class="heart" style="--float-duration: 11.2s; --delay: 1.8s; --translate-x: -32px; left: 48%;">💖</div>
+        <div class="heart" style="--float-duration: 10.8s; --delay: 2.3s; --translate-x: 28px; left: 58%;">💗</div>
+        <div class="heart" style="--float-duration: 11.4s; --delay: 2.8s; --translate-x: -38px; left: 68%;">💓</div>
+        <div class="heart" style="--float-duration: 10.3s; --delay: 3.3s; --translate-x: 42px; left: 78%;">💕</div>
+        <div class="heart" style="--float-duration: 11.6s; --delay: 3.8s; --translate-x: -22px; left: 88%;">✨</div>
+        <div class="heart" style="--float-duration: 10.9s; --delay: 4.3s; --translate-x: 32px; left: 12%;">🌸</div>
+        <div class="heart" style="--float-duration: 11.1s; --delay: 4.8s; --translate-x: -42px; left: 22%;">🦋</div>
     </div>
 
     <section class="welcome">
@@ -378,9 +439,9 @@
     <div class="memory-container">
         <div class="memory-card">
             <img src="./d1.jpg" alt="First Date" class="memory-img">
-            <div class="memory-date">Her Smile Says It All</div>
-            <div class="memory-caption">You’re truly one of the sweetest girls I know, and I feel lucky to have a sis
-                like you.❤️</div>
+            <div class="memory-date">Your Smile Says It All</div>
+            <div class="memory-caption">You’re truly one of the sweetest girls I know, and I feel lucky to have you in my life.
+❤️</div>
         </div>
         <div class="memory-card">
             <img src="./d2.jpg" alt="Beach Day" class="memory-img">
@@ -392,6 +453,21 @@
             <img src="./d3.jpg" alt="Movie Night" class="memory-img">
             <div class="memory-date">Pretty Soul</div>
             <div class="memory-caption">Keep being the amazing person you are—you make every moment brighter.🌸💖</div>
+        </div>
+        <div class="memory-card">
+            <img src="./d4.jpg" alt="Beautiful Moment" class="memory-img">
+            <div class="memory-date">Your Laugh is My Favorite Sound</div>
+            <div class="memory-caption">Every time you laugh, the world feels a little more magical. Never stop being you.✨💗</div>
+        </div>
+        <div class="memory-card">
+            <img src="./d5.jpg" alt="Special Times" class="memory-img">
+            <div class="memory-date">Adventures Together</div>
+            <div class="memory-caption">From silly moments to deep conversations, every memory with you is precious.🌟💕</div>
+        </div>
+        <div class="memory-card">
+            <img src="./d6.jpg" alt="Sweet Memory" class="memory-img">
+            <div class="memory-date">You Light Up My World</div>
+            <div class="memory-caption">Your presence makes everything better. Thank you for being the incredible person you are.💖🌸</div>
         </div>
 
     </div>

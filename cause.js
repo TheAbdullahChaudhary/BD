@@ -1,3 +1,19 @@
+// Initialize audio
+const bgMusic = document.getElementById('bgMusic');
+const savedTime = localStorage.getItem('musicTime');
+if (savedTime) {
+    bgMusic.currentTime = parseFloat(savedTime);
+}
+bgMusic.volume = 1.0;
+const playPromise = bgMusic.play();
+if (playPromise !== undefined) {
+    playPromise.catch(() => {});
+}
+
+setInterval(() => {
+    localStorage.setItem('musicTime', bgMusic.currentTime);
+}, 1000);
+
  // Reasons database
  const reasons = [
     { 
@@ -117,18 +133,20 @@ shuffleButton.addEventListener('click', () => {
 
 // Floating elements function (same as before)
 function createFloatingElement() {
-    const elements = ['🌸', '✨', '💖', '🦋', '⭐'];
+    const elements = ['🌸', '✨', '💖', '🦋', '⭐', '💕', '🌟', '💗', '💝', '💫'];
     const element = document.createElement('div');
     element.className = 'floating';
     element.textContent = elements[Math.floor(Math.random() * elements.length)];
     element.style.left = Math.random() * window.innerWidth + 'px';
     element.style.top = Math.random() * window.innerHeight + 'px';
-    element.style.fontSize = (Math.random() * 20 + 10) + 'px';
+    element.style.fontSize = (Math.random() * 25 + 15) + 'px';
     document.body.appendChild(element);
 
     gsap.to(element, {
-        y: -500,
-        duration: Math.random() * 10 + 10,
+        y: -600,
+        x: Math.random() * 100 - 50,
+        rotation: Math.random() * 360,
+        duration: Math.random() * 2 + 3,
         opacity: 0,
         onComplete: () => element.remove()
     });
@@ -145,4 +163,9 @@ document.addEventListener('mousemove', (e) => {
 });
 
 // Create initial floating elements
-setInterval(createFloatingElement, 2000);
+setInterval(createFloatingElement, 150);
+
+// Create initial burst
+for(let i = 0; i < 15; i++) {
+    setTimeout(createFloatingElement, i * 100);
+}

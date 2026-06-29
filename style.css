@@ -11,12 +11,32 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(-45deg, #fee9f7, #e8f5fe, #fef2e8, #f0ffe8);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    background: linear-gradient(-45deg, #ffb3d9, #ffc9e3, #ffd6ed, #ffe0f0, #ffebf5, #fff0f8);
+    background-size: 600% 600%;
+    animation: gradientBG 8s ease infinite;
     font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
     overflow: hidden;
     position: relative;
+    height: 100vh;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(255, 192, 203, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 182, 193, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 228, 225, 0.4) 0%, transparent 50%);
+    animation: moveBackground 15s ease infinite;
+    z-index: 0;
+}
+
+@keyframes moveBackground {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(5%, 5%) scale(1.1); }
+    66% { transform: translate(-5%, 3%) scale(1.05); }
 }
 
 .cursor {
@@ -39,15 +59,55 @@ h1 {
     font-size: 3.5rem;
     color: #ff69b4;
     text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    font-family: 'Bubblegum Sans', cursive;
+    letter-spacing: 2px;
+}
+
+.days-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 2rem;
     opacity: 0;
 }
 
+.days-number {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #ff69b4;
+    text-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+    font-family: 'Bubblegum Sans', cursive;
+    animation: numberPulse 2s ease-in-out infinite;
+}
+
+.days-text {
+    font-size: 1.2rem;
+    color: #ff1493;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+
+@keyframes numberPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
 .greeting {
     font-size: 1.5rem;
-    color: #8a2be2;
+    color: #4a148c;
     margin-bottom: 3rem;
     min-height: 2em;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(255, 105, 180, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
 }
 
 .cta-button {
@@ -61,17 +121,39 @@ h1 {
     box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
     transition: transform 0.3s, box-shadow 0.3s;
     opacity: 0;
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    position: relative;
 }
 
 .cta-button:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(255, 105, 180, 0.7);
+    box-shadow: 0 0 40px rgba(255, 105, 180, 0.9),
+                0 0 60px rgba(255, 105, 180, 0.7),
+                0 0 80px rgba(255, 105, 180, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    animation: neonPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow: 0 0 40px rgba(255, 105, 180, 0.9),
+                    0 0 60px rgba(255, 105, 180, 0.7),
+                    0 0 80px rgba(255, 105, 180, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(255, 105, 180, 1),
+                    0 0 70px rgba(255, 105, 180, 0.8),
+                    0 0 100px rgba(255, 105, 180, 0.6);
+    }
 }
 
 .floating {
-    position: absolute;
+    position: fixed;
     pointer-events: none;
     opacity: 0;
+    z-index: 0;
 }
 
 @keyframes gradientBG {

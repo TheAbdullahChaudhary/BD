@@ -1,3 +1,19 @@
+// Initialize audio
+const bgMusic = document.getElementById('bgMusic');
+const savedTime = localStorage.getItem('musicTime');
+if (savedTime) {
+    bgMusic.currentTime = parseFloat(savedTime);
+}
+bgMusic.volume = 1.0;
+const playPromise = bgMusic.play();
+if (playPromise !== undefined) {
+    playPromise.catch(() => {});
+}
+
+setInterval(() => {
+    localStorage.setItem('musicTime', bgMusic.currentTime);
+}, 1000);
+
 // Cursor following effect
 const cursor = document.querySelector('.cursor');
 document.addEventListener('mousemove', (e) => {
@@ -18,22 +34,25 @@ function typeGreeting() {
     }
 }
 
+greetingElement.style.fontFamily = "'Dancing Script', cursive";
+greetingElement.style.fontSize = "1.8rem";
+
 // Create floating elements
-const floatingElements = ['💖', '✨', '🌸', '💫', '💕'];
+const floatingElements = ['💖', '✨', '🌸', '💫', '💕', '🦋', '⭐', '🌟', '💗', '💝'];
 function createFloating() {
     const element = document.createElement('div');
     element.className = 'floating';
     element.textContent = floatingElements[Math.floor(Math.random() * floatingElements.length)];
     element.style.left = Math.random() * 100 + 'vw';
     element.style.top = Math.random() * 100 + 'vh';
-    element.style.fontSize = (Math.random() * 20 + 20) + 'px';
+    element.style.fontSize = (Math.random() * 25 + 15) + 'px';
     document.body.appendChild(element);
 
     gsap.to(element, {
-        y: -500,
+        y: -600,
         x: Math.random() * 100 - 50,
         rotation: Math.random() * 360,
-        duration: Math.random() * 5 + 5,
+        duration: Math.random() * 2 + 2,
         opacity: 1,
         ease: "none",
         onComplete: () => element.remove()
@@ -50,6 +69,27 @@ window.addEventListener('load', () => {
         ease: "bounce.out"
     });
 
+    // Days counter animation
+    const totalDays = 8766;
+    
+    gsap.to('.days-counter', {
+        opacity: 1,
+        duration: 1,
+        delay: 0.5,
+        ease: "back.out"
+    });
+
+    // Animate the number counting up
+    let currentDay = 0;
+    const countInterval = setInterval(() => {
+        currentDay += Math.ceil(totalDays / 50);
+        if (currentDay >= totalDays) {
+            currentDay = totalDays;
+            clearInterval(countInterval);
+        }
+        document.getElementById('daysCount').textContent = currentDay.toLocaleString();
+    }, 30);
+
     // Button animation
     gsap.to('.cta-button', {
         opacity: 1,
@@ -62,7 +102,12 @@ window.addEventListener('load', () => {
     typeGreeting();
 
     // Create floating elements periodically
-    setInterval(createFloating, 1000);
+    setInterval(createFloating, 150);
+    
+    // Create initial burst
+    for(let i = 0; i < 20; i++) {
+        setTimeout(createFloating, i * 50);
+    }
 });
 
 // Hover effects
