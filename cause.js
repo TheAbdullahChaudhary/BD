@@ -5,14 +5,21 @@ if (savedTime) {
     bgMusic.currentTime = parseFloat(savedTime);
 }
 bgMusic.volume = 1.0;
-const playPromise = bgMusic.play();
-if (playPromise !== undefined) {
-    playPromise.catch(() => {});
-}
+bgMusic.play().then(() => {
+    console.log('Music playing from:', bgMusic.currentTime);
+}).catch(() => {});
 
+// Save time more frequently
 setInterval(() => {
+    if (!bgMusic.paused) {
+        localStorage.setItem('musicTime', bgMusic.currentTime);
+    }
+}, 100);
+
+// Save before page unload
+window.addEventListener('beforeunload', () => {
     localStorage.setItem('musicTime', bgMusic.currentTime);
-}, 1000);
+});
 
  // Reasons database
  const reasons = [
@@ -95,6 +102,8 @@ function displayNewReason() {
                     shuffleButton.textContent = "Enter Our Storylane 💫";
                     shuffleButton.classList.add('story-mode');
                     shuffleButton.addEventListener('click', () => {
+                        const bgMusic = document.getElementById('bgMusic');
+                        localStorage.setItem('musicTime', bgMusic.currentTime);
                         gsap.to('body', {
                             opacity: 0,
                             duration: 1,

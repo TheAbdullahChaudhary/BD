@@ -387,13 +387,19 @@
             bgMusic.currentTime = parseFloat(savedTime);
         }
         bgMusic.volume = 1.0;
-        const playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(() => {});
-        }
+        bgMusic.play().then(() => {
+            console.log('Music playing from:', bgMusic.currentTime);
+        }).catch(() => {});
+        
         setInterval(() => {
+            if (!bgMusic.paused) {
+                localStorage.setItem('musicTime', bgMusic.currentTime);
+            }
+        }, 100);
+        
+        window.addEventListener('beforeunload', () => {
             localStorage.setItem('musicTime', bgMusic.currentTime);
-        }, 1000);
+        });
     </script>
     <div class="background-overlay"></div>
     <div class="magic-sparkles"></div>
