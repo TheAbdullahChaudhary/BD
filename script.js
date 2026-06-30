@@ -1,4 +1,4 @@
-// Initialize audio with music toggle button
+// Initialize audio - Start playing immediately on page load
 const bgMusic = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const savedTime = localStorage.getItem('musicTime');
@@ -7,7 +7,41 @@ let isPlaying = false;
 if (savedTime) {
     bgMusic.currentTime = parseFloat(savedTime);
 }
+
+// Unmute and play immediately
+bgMusic.muted = false;
 bgMusic.volume = 1.0;
+
+// Force play on page load
+const forcePlay = () => {
+    bgMusic.play().then(() => {
+        console.log('Music auto-playing from:', bgMusic.currentTime);
+        musicToggle.classList.add('playing');
+        isPlaying = true;
+    }).catch((error) => {
+        console.log('Autoplay failed, trying alternative method');
+        // If unmuted autoplay fails, play muted then unmute
+        bgMusic.muted = true;
+        bgMusic.play().then(() => {
+            // Unmute after a tiny delay
+            setTimeout(() => {
+                bgMusic.muted = false;
+                musicToggle.classList.add('playing');
+                isPlaying = true;
+            }, 100);
+        }).catch(e => {
+            console.log('All autoplay methods failed');
+            musicToggle.textContent = '🔇';
+            musicToggle.classList.add('muted');
+        });
+    });
+};
+
+// Try immediately
+forcePlay();
+
+// Also try on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', forcePlay);
 
 // Music toggle function
 const toggleMusic = () => {
@@ -30,41 +64,11 @@ const toggleMusic = () => {
     }
 };
 
-// Try autoplay on load
-window.addEventListener('load', () => {
-    bgMusic.play().then(() => {
-        console.log('Autoplay successful');
-        musicToggle.classList.add('playing');
-        isPlaying = true;
-    }).catch(() => {
-        console.log('Autoplay blocked - user must click music button');
-        musicToggle.textContent = '🔇';
-        musicToggle.classList.add('muted');
-    });
-});
-
 // Music button click
 musicToggle.addEventListener('click', (e) => {
     e.stopPropagation();
     toggleMusic();
 });
-
-// Also try to play on first page interaction
-let firstInteraction = true;
-const startOnInteraction = () => {
-    if (firstInteraction && !isPlaying) {
-        bgMusic.play().then(() => {
-            musicToggle.textContent = '🔊';
-            musicToggle.classList.add('playing');
-            musicToggle.classList.remove('muted');
-            isPlaying = true;
-            firstInteraction = false;
-        }).catch(() => {});
-    }
-};
-
-document.addEventListener('click', startOnInteraction);
-document.addEventListener('touchstart', startOnInteraction);
 
 // Save time more frequently
 setInterval(() => {
