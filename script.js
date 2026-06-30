@@ -12,36 +12,34 @@ if (savedTime) {
 bgMusic.muted = false;
 bgMusic.volume = 1.0;
 
-// Force play on page load
-const forcePlay = () => {
-    bgMusic.play().then(() => {
-        console.log('Music auto-playing from:', bgMusic.currentTime);
-        musicToggle.classList.add('playing');
-        isPlaying = true;
-    }).catch((error) => {
-        console.log('Autoplay failed, trying alternative method');
-        // If unmuted autoplay fails, play muted then unmute
-        bgMusic.muted = true;
+// Force play after 5 seconds
+setTimeout(() => {
+    const forcePlay = () => {
         bgMusic.play().then(() => {
-            // Unmute after a tiny delay
-            setTimeout(() => {
-                bgMusic.muted = false;
-                musicToggle.classList.add('playing');
-                isPlaying = true;
-            }, 100);
-        }).catch(e => {
-            console.log('All autoplay methods failed');
-            musicToggle.textContent = '🔇';
-            musicToggle.classList.add('muted');
+            console.log('Music auto-playing from:', bgMusic.currentTime);
+            musicToggle.classList.add('playing');
+            isPlaying = true;
+        }).catch((error) => {
+            console.log('Autoplay failed, trying alternative method');
+            // If unmuted autoplay fails, play muted then unmute
+            bgMusic.muted = true;
+            bgMusic.play().then(() => {
+                // Unmute after a tiny delay
+                setTimeout(() => {
+                    bgMusic.muted = false;
+                    musicToggle.classList.add('playing');
+                    isPlaying = true;
+                }, 100);
+            }).catch(e => {
+                console.log('All autoplay methods failed');
+                musicToggle.textContent = '🔇';
+                musicToggle.classList.add('muted');
+            });
         });
-    });
-};
-
-// Try immediately
-forcePlay();
-
-// Also try on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', forcePlay);
+    };
+    
+    forcePlay();
+}, 5000);
 
 // Music toggle function
 const toggleMusic = () => {
