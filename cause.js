@@ -92,6 +92,14 @@ function displayNewReason() {
         
         currentReasonIndex++;
 
+        // Scroll to button after card is shown
+        setTimeout(() => {
+            shuffleButton.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        }, 600);
+
         // Check if we should transform the button
         if (currentReasonIndex === reasons.length) {
             gsap.to(shuffleButton, {
