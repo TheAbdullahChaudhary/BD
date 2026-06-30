@@ -7,17 +7,21 @@
 }
 
 html {
-    overflow-y: scroll;
+    height: 100%;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
 
 body {
     min-height: 100vh;
+    height: auto;
     background: linear-gradient(-45deg, #ffb3d9, #ffc9e3, #ffd6ed, #ffe0f0, #ffebf5, #fff0f8);
     background-size: 600% 600%;
+    background-attachment: fixed;
     animation: gradientBG 8s ease infinite;
     font-family: 'Quicksand', sans-serif;
     overflow-x: hidden;
+    overflow-y: visible;
     padding: 2rem;
     position: relative;
 }
@@ -73,7 +77,8 @@ body {
     text-align: center;
     position: relative;
     z-index: 1;
-    padding-bottom: 2rem;
+    padding-bottom: 4rem;
+    min-height: auto;
 }
 
 h1 {
@@ -157,6 +162,7 @@ h1 {
     margin-top: 4rem;
     padding: 2rem;
     text-align: center;
+    margin-bottom: 2rem;
 }
 
 .ending-text {
