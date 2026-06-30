@@ -1,31 +1,70 @@
-// Initialize audio with user interaction fallback
+// Initialize audio with music toggle button
 const bgMusic = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
 const savedTime = localStorage.getItem('musicTime');
+let isPlaying = false;
+
 if (savedTime) {
     bgMusic.currentTime = parseFloat(savedTime);
 }
+bgMusic.volume = 1.0;
 
-// Try to play immediately (unmute and play)
-const playMusic = () => {
-    bgMusic.muted = false;
-    bgMusic.volume = 1.0;
-    bgMusic.play().then(() => {
-        console.log('Music playing from:', bgMusic.currentTime);
-        document.removeEventListener('click', playMusic);
-        document.removeEventListener('touchstart', playMusic);
-        document.removeEventListener('keydown', playMusic);
-    }).catch((error) => {
-        console.log('Autoplay blocked, waiting for user interaction');
-    });
+// Music toggle function
+const toggleMusic = () => {
+    if (isPlaying) {
+        bgMusic.pause();
+        musicToggle.textContent = '🔇';
+        musicToggle.classList.remove('playing');
+        musicToggle.classList.add('muted');
+        isPlaying = false;
+    } else {
+        bgMusic.play().then(() => {
+            console.log('Music playing from:', bgMusic.currentTime);
+            musicToggle.textContent = '🔊';
+            musicToggle.classList.add('playing');
+            musicToggle.classList.remove('muted');
+            isPlaying = true;
+        }).catch((error) => {
+            console.log('Error playing music:', error);
+        });
+    }
 };
 
-// Attempt autoplay on page load
-window.addEventListener('load', playMusic);
+// Try autoplay on load
+window.addEventListener('load', () => {
+    bgMusic.play().then(() => {
+        console.log('Autoplay successful');
+        musicToggle.classList.add('playing');
+        isPlaying = true;
+    }).catch(() => {
+        console.log('Autoplay blocked - user must click music button');
+        musicToggle.textContent = '🔇';
+        musicToggle.classList.add('muted');
+    });
+});
 
-// If autoplay fails, play on first user interaction
-document.addEventListener('click', playMusic, { once: true });
-document.addEventListener('touchstart', playMusic, { once: true });
-document.addEventListener('keydown', playMusic, { once: true });
+// Music button click
+musicToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMusic();
+});
+
+// Also try to play on first page interaction
+let firstInteraction = true;
+const startOnInteraction = () => {
+    if (firstInteraction && !isPlaying) {
+        bgMusic.play().then(() => {
+            musicToggle.textContent = '🔊';
+            musicToggle.classList.add('playing');
+            musicToggle.classList.remove('muted');
+            isPlaying = true;
+            firstInteraction = false;
+        }).catch(() => {});
+    }
+};
+
+document.addEventListener('click', startOnInteraction);
+document.addEventListener('touchstart', startOnInteraction);
 
 // Save time more frequently
 setInterval(() => {
