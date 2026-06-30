@@ -1,45 +1,50 @@
-// Initialize audio - Start playing immediately on page load
+// Initialize audio - Start playing from 5 seconds
 const bgMusic = document.getElementById('bgMusic');
 const musicToggle = document.getElementById('musicToggle');
 const savedTime = localStorage.getItem('musicTime');
 let isPlaying = false;
 
+// If there's no saved time, start from 5 seconds, otherwise resume from saved time
 if (savedTime) {
     bgMusic.currentTime = parseFloat(savedTime);
+} else {
+    bgMusic.currentTime = 5; // Skip first 5 seconds
 }
 
 // Unmute and play immediately
 bgMusic.muted = false;
 bgMusic.volume = 1.0;
 
-// Force play after 5 seconds
-setTimeout(() => {
-    const forcePlay = () => {
+// Force play on page load
+const forcePlay = () => {
+    bgMusic.play().then(() => {
+        console.log('Music auto-playing from:', bgMusic.currentTime);
+        musicToggle.classList.add('playing');
+        isPlaying = true;
+    }).catch((error) => {
+        console.log('Autoplay failed, trying alternative method');
+        // If unmuted autoplay fails, play muted then unmute
+        bgMusic.muted = true;
         bgMusic.play().then(() => {
-            console.log('Music auto-playing from:', bgMusic.currentTime);
-            musicToggle.classList.add('playing');
-            isPlaying = true;
-        }).catch((error) => {
-            console.log('Autoplay failed, trying alternative method');
-            // If unmuted autoplay fails, play muted then unmute
-            bgMusic.muted = true;
-            bgMusic.play().then(() => {
-                // Unmute after a tiny delay
-                setTimeout(() => {
-                    bgMusic.muted = false;
-                    musicToggle.classList.add('playing');
-                    isPlaying = true;
-                }, 100);
-            }).catch(e => {
-                console.log('All autoplay methods failed');
-                musicToggle.textContent = '🔇';
-                musicToggle.classList.add('muted');
-            });
+            // Unmute after a tiny delay
+            setTimeout(() => {
+                bgMusic.muted = false;
+                musicToggle.classList.add('playing');
+                isPlaying = true;
+            }, 100);
+        }).catch(e => {
+            console.log('All autoplay methods failed');
+            musicToggle.textContent = '🔇';
+            musicToggle.classList.add('muted');
         });
-    };
-    
-    forcePlay();
-}, 5000);
+    });
+};
+
+// Try immediately
+forcePlay();
+
+// Also try on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', forcePlay);
 
 // Music toggle function
 const toggleMusic = () => {
