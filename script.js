@@ -1,13 +1,31 @@
-// Initialize audio
+// Initialize audio with user interaction fallback
 const bgMusic = document.getElementById('bgMusic');
 const savedTime = localStorage.getItem('musicTime');
 if (savedTime) {
     bgMusic.currentTime = parseFloat(savedTime);
 }
-bgMusic.volume = 1.0;
-bgMusic.play().then(() => {
-    console.log('Music playing from:', bgMusic.currentTime);
-}).catch(() => {});
+
+// Try to play immediately (unmute and play)
+const playMusic = () => {
+    bgMusic.muted = false;
+    bgMusic.volume = 1.0;
+    bgMusic.play().then(() => {
+        console.log('Music playing from:', bgMusic.currentTime);
+        document.removeEventListener('click', playMusic);
+        document.removeEventListener('touchstart', playMusic);
+        document.removeEventListener('keydown', playMusic);
+    }).catch((error) => {
+        console.log('Autoplay blocked, waiting for user interaction');
+    });
+};
+
+// Attempt autoplay on page load
+window.addEventListener('load', playMusic);
+
+// If autoplay fails, play on first user interaction
+document.addEventListener('click', playMusic, { once: true });
+document.addEventListener('touchstart', playMusic, { once: true });
+document.addEventListener('keydown', playMusic, { once: true });
 
 // Save time more frequently
 setInterval(() => {
