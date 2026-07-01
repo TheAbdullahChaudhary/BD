@@ -1,27 +1,4 @@
-// Initialize audio
-const bgMusic = document.getElementById('bgMusic');
-const savedTime = localStorage.getItem('musicTime');
-if (savedTime) {
-    bgMusic.currentTime = parseFloat(savedTime);
-}
-bgMusic.volume = 1.0;
-bgMusic.play().then(() => {
-    console.log('Music playing from:', bgMusic.currentTime);
-}).catch(() => {});
-
-// Save time more frequently
-setInterval(() => {
-    if (!bgMusic.paused) {
-        localStorage.setItem('musicTime', bgMusic.currentTime);
-    }
-}, 100);
-
-// Save before page unload
-window.addEventListener('beforeunload', () => {
-    localStorage.setItem('musicTime', bgMusic.currentTime);
-});
-
- // Reasons database
+// Reasons database
  const reasons = [
     { 
         text: "You’re such a kind and wonderful person, and I feel lucky to share such a good bond with you. 💖", 
@@ -110,8 +87,6 @@ function displayNewReason() {
                     shuffleButton.textContent = "Enter Our Storylane 💫";
                     shuffleButton.classList.add('story-mode');
                     shuffleButton.addEventListener('click', () => {
-                        const bgMusic = document.getElementById('bgMusic');
-                        localStorage.setItem('musicTime', bgMusic.currentTime);
                         gsap.to('body', {
                             opacity: 0,
                             duration: 1,

@@ -162,43 +162,6 @@ h1 {
     100% { background-position: 0% 50%; }
 }
 
-.music-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 10000;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #ff69b4, #ff99cc);
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
-    transition: transform 0.3s, box-shadow 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.music-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 105, 180, 0.6);
-}
-
-.music-toggle.playing {
-    animation: musicPulse 1.5s ease-in-out infinite;
-}
-
-.music-toggle.muted {
-    opacity: 0.5;
-}
-
-@keyframes musicPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-}
-
 @media (max-width: 768px) {
     h1 { font-size: 2rem; }
     .greeting { font-size: 1.2rem; }

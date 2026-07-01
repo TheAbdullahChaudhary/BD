@@ -377,30 +377,6 @@
 </head>
 
 <body>
-    <audio id="bgMusic" loop autoplay>
-        <source src="aud.mp3" type="audio/mpeg">
-    </audio>
-    <script>
-        const bgMusic = document.getElementById('bgMusic');
-        const savedTime = localStorage.getItem('musicTime');
-        if (savedTime) {
-            bgMusic.currentTime = parseFloat(savedTime);
-        }
-        bgMusic.volume = 1.0;
-        bgMusic.play().then(() => {
-            console.log('Music playing from:', bgMusic.currentTime);
-        }).catch(() => {});
-        
-        setInterval(() => {
-            if (!bgMusic.paused) {
-                localStorage.setItem('musicTime', bgMusic.currentTime);
-            }
-        }, 100);
-        
-        window.addEventListener('beforeunload', () => {
-            localStorage.setItem('musicTime', bgMusic.currentTime);
-        });
-    </script>
     <div class="background-overlay"></div>
     <div class="magic-sparkles"></div>
     <div class="floating-hearts">

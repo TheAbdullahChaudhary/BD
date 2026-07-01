@@ -1,90 +1,3 @@
-// Initialize audio - Start playing from 5 seconds
-const bgMusic = document.getElementById('bgMusic');
-const musicToggle = document.getElementById('musicToggle');
-const savedTime = localStorage.getItem('musicTime');
-let isPlaying = false;
-
-// If there's no saved time, start from 5 seconds, otherwise resume from saved time
-if (savedTime) {
-    bgMusic.currentTime = parseFloat(savedTime);
-} else {
-    bgMusic.currentTime = 5; // Skip first 5 seconds
-}
-
-// Unmute and play immediately
-bgMusic.muted = false;
-bgMusic.volume = 1.0;
-
-// Force play on page load
-const forcePlay = () => {
-    bgMusic.play().then(() => {
-        console.log('Music auto-playing from:', bgMusic.currentTime);
-        musicToggle.classList.add('playing');
-        isPlaying = true;
-    }).catch((error) => {
-        console.log('Autoplay failed, trying alternative method');
-        // If unmuted autoplay fails, play muted then unmute
-        bgMusic.muted = true;
-        bgMusic.play().then(() => {
-            // Unmute after a tiny delay
-            setTimeout(() => {
-                bgMusic.muted = false;
-                musicToggle.classList.add('playing');
-                isPlaying = true;
-            }, 100);
-        }).catch(e => {
-            console.log('All autoplay methods failed');
-            musicToggle.textContent = '🔇';
-            musicToggle.classList.add('muted');
-        });
-    });
-};
-
-// Try immediately
-forcePlay();
-
-// Also try on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', forcePlay);
-
-// Music toggle function
-const toggleMusic = () => {
-    if (isPlaying) {
-        bgMusic.pause();
-        musicToggle.textContent = '🔇';
-        musicToggle.classList.remove('playing');
-        musicToggle.classList.add('muted');
-        isPlaying = false;
-    } else {
-        bgMusic.play().then(() => {
-            console.log('Music playing from:', bgMusic.currentTime);
-            musicToggle.textContent = '🔊';
-            musicToggle.classList.add('playing');
-            musicToggle.classList.remove('muted');
-            isPlaying = true;
-        }).catch((error) => {
-            console.log('Error playing music:', error);
-        });
-    }
-};
-
-// Music button click
-musicToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleMusic();
-});
-
-// Save time more frequently
-setInterval(() => {
-    if (!bgMusic.paused) {
-        localStorage.setItem('musicTime', bgMusic.currentTime);
-    }
-}, 100);
-
-// Save before page unload
-window.addEventListener('beforeunload', () => {
-    localStorage.setItem('musicTime', bgMusic.currentTime);
-});
-
 // Cursor following effect
 const cursor = document.querySelector('.cursor');
 document.addEventListener('mousemove', (e) => {
@@ -200,7 +113,6 @@ window.addEventListener('load', () => {
 
         // Smooth page transition on click
         button.addEventListener('click', () => {
-            localStorage.setItem('musicTime', bgMusic.currentTime);
             gsap.to('body', {
                 opacity: 0,
                 duration: 1,
